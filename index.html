@@ -354,54 +354,56 @@
             border: none;
             padding: 8px 15px;
             font-size: 10px;
+            font-family: inherit;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
 
-            .load-bar-fill {
-                width: 0%;
+        #custom-controls button:hover {
+            opacity: 0.8;
+        }
+
+        /* MOBILE ADAPTATION */
+        @media (max-width: 1100px) {
+            #ui-dock {
+                flex-direction: column;
+                transform: scale(1);
+                padding: 20px;
+                gap: 20px;
+                pointer-events: auto;
+                overflow-y: auto;
+                justify-content: flex-start;
                 height: 100%;
-                background: var(--accent);
-                transition: width 0.3s;
+                width: 100%;
             }
 
-            /* MOBILE ADAPTATION */
-            @media (max-width: 1100px) {
-                #ui-dock {
-                    flex-direction: column;
-                    transform: scale(1);
-                    padding: 20px;
-                    gap: 20px;
-                    pointer-events: auto;
-                    overflow-y: auto;
-                    justify-content: flex-start;
-                    height: 100%;
-                    width: 100%;
-                }
-
-                #ui-wrapper {
-                    padding: 10px;
-                    align-items: flex-start;
-                    overflow-y: auto;
-                }
-
-                #pollution-gauge,
-                #data-projection {
-                    width: 100%;
-                    max-width: none;
-                }
-
-                .proj-section {
-                    grid-template-columns: 1fr 1fr;
-                }
-
-                .proj-title-big {
-                    font-size: 24px;
-                    text-align: center;
-                    margin: 20px 0;
-                }
-
-                body {
-                    overflow-y: auto;
-                }
+            #ui-wrapper {
+                padding: 10px;
+                align-items: flex-start;
+                overflow-y: auto;
             }
+
+            #pollution-gauge,
+            #data-projection {
+                width: 100%;
+                max-width: none;
+            }
+
+            .proj-section {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .proj-title-big {
+                font-size: 24px;
+                text-align: center;
+                margin: 20px 0;
+            }
+
+            body {
+                overflow-y: auto;
+            }
+        }
     </style>
 </head>
 
