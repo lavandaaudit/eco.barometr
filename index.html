@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="uk">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -16,9 +17,9 @@
             --font-mono: 'Courier New', monospace;
         }
 
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -31,7 +32,12 @@
             user-select: none;
         }
 
-        #bg-canvas { position: fixed; inset: 0; z-index: 1; opacity: 0.6; }
+        #bg-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            opacity: 0.6;
+        }
 
         #ui-wrapper {
             position: relative;
@@ -40,7 +46,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 60px; /* Великі відступи */
+            padding: 60px;
+            /* Increased padding */
         }
 
         #ui-dock {
@@ -49,11 +56,12 @@
             max-width: 1300px;
             width: 100%;
             pointer-events: none;
-            transform: scale(0.85); /* Масштаб 85% */
+            transform: scale(0.85);
+            /* Reduced scale by 15% */
             transform-origin: center;
         }
 
-        /* ЛІВИЙ БЛОК */
+        /* ЛІВИЙ БЛОК: ГЕЙДЖ */
         #pollution-gauge {
             width: 360px;
             background: var(--glass);
@@ -71,7 +79,10 @@
         #pollution-gauge::before {
             content: "";
             position: absolute;
-            top: -1px; left: -1px; width: 20px; height: 20px;
+            top: -1px;
+            left: -1px;
+            width: 20px;
+            height: 20px;
             border-top: 2px solid var(--accent);
             border-left: 2px solid var(--accent);
         }
@@ -79,7 +90,10 @@
         #pollution-gauge::after {
             content: "";
             position: absolute;
-            bottom: -1px; right: -1px; width: 20px; height: 20px;
+            bottom: -1px;
+            right: -1px;
+            width: 20px;
+            height: 20px;
             border-bottom: 2px solid var(--accent);
             border-right: 2px solid var(--accent);
         }
@@ -107,7 +121,7 @@
         }
 
         .alert-item {
-            background: rgba(255,51,102,0.1);
+            background: rgba(255, 51, 102, 0.1);
             border: 1px solid var(--danger);
             color: var(--danger);
             font-size: 9px;
@@ -120,28 +134,37 @@
         }
 
         .alert-item.warning {
-            background: rgba(255,204,51,0.1);
+            background: rgba(255, 204, 51, 0.1);
             border: 1px solid var(--warning);
             color: var(--warning);
         }
 
         .alert-item.safe {
-            background: rgba(0,255,153,0.05);
+            background: rgba(0, 255, 153, 0.05);
             border: 1px solid var(--accent);
             color: var(--accent);
             animation: none;
         }
 
         @keyframes pulse-alert {
-            0%,100% { opacity: 1; filter: brightness(1.2); }
-            50% { opacity: 0.6; filter: brightness(0.8); }
+
+            0%,
+            100% {
+                opacity: 1;
+                filter: brightness(1.2);
+            }
+
+            50% {
+                opacity: 0.6;
+                filter: brightness(0.8);
+            }
         }
 
         .viz-container {
             width: 100%;
             height: 180px;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(0,255,153,0.1);
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 255, 153, 0.1);
             margin-bottom: 15px;
             position: relative;
             overflow: hidden;
@@ -155,9 +178,9 @@
         }
 
         .data-box {
-            border: 1px solid rgba(0,255,153,0.15);
+            border: 1px solid rgba(0, 255, 153, 0.15);
             padding: 8px;
-            background: rgba(0,20,10,0.3);
+            background: rgba(0, 20, 10, 0.3);
         }
 
         .data-box label {
@@ -183,8 +206,13 @@
             padding-right: 5px;
         }
 
-        .location-grid::-webkit-scrollbar { width: 3px; }
-        .location-grid::-webkit-scrollbar-thumb { background: var(--border); }
+        .location-grid::-webkit-scrollbar {
+            width: 3px;
+        }
+
+        .location-grid::-webkit-scrollbar-thumb {
+            background: var(--border);
+        }
 
         .loc-btn {
             background: rgba(0, 255, 153, 0.05);
@@ -198,7 +226,10 @@
             text-transform: uppercase;
         }
 
-        .loc-btn:hover { background: rgba(0, 255, 153, 0.15); }
+        .loc-btn:hover {
+            background: rgba(0, 255, 153, 0.15);
+        }
+
         .loc-btn.active {
             background: var(--accent);
             color: #000;
@@ -237,7 +268,10 @@
             border: 1px solid var(--border);
         }
 
-        .proj-item { display: flex; flex-direction: column; }
+        .proj-item {
+            display: flex;
+            flex-direction: column;
+        }
 
         .proj-label {
             font-size: 9px;
@@ -274,14 +308,18 @@
         #eco-desc::before {
             content: "SYSTEM_REPORT_v2.6";
             position: absolute;
-            top: -7px; left: 10px;
+            top: -7px;
+            left: 10px;
             background: #000;
             color: var(--accent);
             font-size: 8px;
             padding: 0 5px;
         }
 
-        #detailed-desc { white-space: pre-wrap; display: block; }
+        #detailed-desc {
+            white-space: pre-wrap;
+            display: block;
+        }
 
         .proj-title-big {
             font-size: 48px;
@@ -322,9 +360,11 @@
             transition: opacity 0.2s;
         }
 
-        #custom-controls button:hover { opacity: 0.8; }
+        #custom-controls button:hover {
+            opacity: 0.8;
+        }
 
-        /* МОБІЛЬНА АДАПТАЦІЯ */
+        /* MOBILE ADAPTATION */
         @media (max-width: 1100px) {
             #ui-dock {
                 flex-direction: column;
@@ -337,54 +377,73 @@
                 height: 100%;
                 width: 100%;
             }
+
             #ui-wrapper {
                 padding: 10px;
                 align-items: flex-start;
                 overflow-y: auto;
             }
-            #pollution-gauge, #data-projection {
+
+            #pollution-gauge,
+            #data-projection {
                 width: 100%;
                 max-width: none;
             }
-            .proj-section { grid-template-columns: 1fr 1fr; }
+
+            .proj-section {
+                grid-template-columns: 1fr 1fr;
+            }
+
             .proj-title-big {
                 font-size: 24px;
                 text-align: center;
                 margin: 20px 0;
             }
-            body { overflow-y: auto; }
+
+            body {
+                overflow-y: auto;
+            }
         }
     </style>
 </head>
+
 <body>
     <canvas id="bg-canvas"></canvas>
 
     <div id="ui-wrapper">
         <div id="ui-dock">
+            <!-- ЛІВИЙ БЛОК -->
             <div id="pollution-gauge">
                 <div class="inst-header">
                     <span>ECO_SCANNER_PRO</span>
                     <span id="real-time-clock">--:--:--</span>
                 </div>
+
                 <div id="alert-zone"></div>
+
                 <div class="viz-container">
                     <canvas id="pollution-viz"></canvas>
                 </div>
+
                 <div class="data-grid">
                     <div class="data-box"><label>ЛОКАЦІЯ</label><b id="locName">---</b></div>
                     <div class="data-box"><label>pH БАЛАНС</label><b id="phVal">--</b></div>
                     <div class="data-box"><label>ТОКСИЧНІСТЬ</label><b id="toxinLvl">--</b></div>
                     <div class="data-box"><label>НІТРАТИ</label><b id="nitrates">--</b> <small>мг/л</small></div>
                 </div>
+
                 <div class="location-grid" id="locContainer"></div>
+
                 <div id="custom-controls">
                     <input type="text" id="c-lat" placeholder="LAT">
                     <input type="text" id="c-lon" placeholder="LON">
                     <button id="search-btn">SCAN</button>
                 </div>
+
                 <div id="sys-log"></div>
             </div>
 
+            <!-- ПРАВИЙ БЛОК -->
             <div id="data-projection">
                 <div class="proj-section">
                     <div class="proj-item">
@@ -404,9 +463,10 @@
                         <div class="proj-value" id="riskLevel" style="font-size: 18px;">---</div>
                     </div>
                 </div>
+
                 <div class="proj-section" style="grid-template-columns: repeat(3, 1fr);">
                     <div class="proj-item">
-                        <div class="proj-label">SOIL MOISTURE</div>
+                        <div class="proj-label">SOIL MOISTURE (0-10cm)</div>
                         <div class="proj-value" id="soilMoist">--<span>%</span></div>
                     </div>
                     <div class="proj-item">
@@ -414,14 +474,16 @@
                         <div class="proj-value" id="soilTemp">--<span>°C</span></div>
                     </div>
                     <div class="proj-item">
-                        <div class="proj-label">AQI (AIR)</div>
+                        <div class="proj-label">AQI (AIR CONTEXT)</div>
                         <div class="proj-value" id="airAqi">--</div>
                     </div>
                 </div>
+
                 <div id="eco-desc">
                     <b style="color:var(--accent); font-size: 11px;">[ ECO_ANALYTIC_REPORT_2026 ]</b><br><br>
-                    <span id="detailed-desc">Syncing with Neural Grid...</span>
+                    <span id="detailed-desc">Connecting to Open-Meteo Neural Grid...</span>
                 </div>
+
                 <div class="proj-title-big" id="locBigName">SYSTEM_IDLE</div>
             </div>
         </div>
@@ -429,23 +491,56 @@
 
     <script>
         const LOCATIONS = [
-            { name: "Київ", lat: 50.45, lon: 30.52 }, { name: "Харків", lat: 50.00, lon: 36.23 },
-            { name: "Львів", lat: 49.84, lon: 24.03 }, { name: "Одеса", lat: 46.48, lon: 30.73 },
-            { name: "Дніпро", lat: 48.46, lon: 35.04 }, { name: "Донецьк", lat: 48.01, lon: 37.80 },
-            { name: "London", lat: 51.51, lon: -0.13 }, { name: "New York", lat: 40.71, lon: -74.01 },
-            { name: "Tokyo", lat: 35.68, lon: 139.69 }, { name: "Berlin", lat: 52.52, lon: 13.40 },
-            { name: "Paris", lat: 48.86, lon: 2.35 }, { name: "Sydney", lat: -33.86, lon: 151.20 }
+            { name: "Київ", lat: 50.45, lon: 30.52 },
+            { name: "Харків", lat: 50.00, lon: 36.23 },
+            { name: "Львів", lat: 49.84, lon: 24.03 },
+            { name: "Одеса", lat: 46.48, lon: 30.73 },
+            { name: "Дніпро", lat: 48.46, lon: 35.04 },
+            { name: "Донецьк", lat: 48.01, lon: 37.80 },
+            { name: "Севастополь", lat: 44.61, lon: 33.52 },
+            { name: "London", lat: 51.51, lon: -0.13 },
+            { name: "New York", lat: 40.71, lon: -74.01 },
+            { name: "Tokyo", lat: 35.68, lon: 139.69 },
+            { name: "Berlin", lat: 52.52, lon: 13.40 },
+            { name: "Paris", lat: 48.86, lon: 2.35 },
+            { name: "Beijing", lat: 39.90, lon: 116.40 },
+            { name: "Sydney", lat: -33.86, lon: 151.20 },
+            { name: "Cairo", lat: 30.04, lon: 31.23 },
+            { name: "Dubai", lat: 25.20, lon: 55.27 },
+            { name: "Vienna", lat: 48.21, lon: 16.37 },
+            { name: "Toronto", lat: 43.65, lon: -79.38 },
+            { name: "Seoul", lat: 37.56, lon: 126.97 },
+            { name: "Istanbul", lat: 41.01, lon: 28.97 },
+            { name: "Madrid", lat: 40.41, lon: -3.70 },
+            { name: "Singapore", lat: 1.35, lon: 103.82 },
+            { name: "Mexico City", lat: 19.43, lon: -99.13 },
+            { name: "Mumbai", lat: 19.07, lon: 72.87 },
+            { name: "Sao Paulo", lat: -23.55, lon: -46.63 }
         ];
 
-        let currentData = { ph: 7.0, nitrates: 0, toxins: 0, metals: 0, moisture: 0, soilTemp: 0, aqi: 0, risk: "NORMAL" };
-        let selectedLoc = LOCATIONS[0];
+        let currentData = {
+            ph: 7.0,
+            nitrates: 0,
+            toxins: 0,
+            metals: 0,
+            phosphates: 0,
+            moisture: 0,
+            soilTemp: 0,
+            aqi: 0,
+            risk: "NORMAL"
+        };
 
+        let selectedLoc = LOCATIONS[0];
+        let updateInterval;
+
+        // UI ELEMENTS
         const locContainer = document.getElementById('locContainer');
         const bgCanvas = document.getElementById('bg-canvas');
         const bgCtx = bgCanvas.getContext('2d');
         const vizCanvas = document.getElementById('pollution-viz');
         const vizCtx = vizCanvas.getContext('2d');
 
+        // INITIALIZE LOCATIONS
         LOCATIONS.forEach(loc => {
             const btn = document.createElement('div');
             btn.className = 'loc-btn';
@@ -461,55 +556,99 @@
             refreshData();
         }
 
+        // TIME UPDATER
         function updateTime() {
-            document.getElementById('real-time-clock').textContent = new Date().toLocaleTimeString('uk-UA');
+            const now = new Date();
+            document.getElementById('real-time-clock').textContent = now.toLocaleTimeString('uk-UA');
         }
         setInterval(updateTime, 1000);
 
+        // API FETCHING LOGIC
         async function fetchEnvironmentalData(lat, lon) {
             try {
                 log(`QUERYING_NODE: ${lat.toFixed(2)}, ${lon.toFixed(2)}`);
-                const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=soil_temperature_0cm,soil_moisture_0_to_1cm,precipitation`);
+
+                // Fetch Soil/Weather Data
+                const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=soil_temperature_0cm,soil_moisture_0_to_1cm,precipitation&current=temperature_2m`);
                 const weatherData = await weatherRes.json();
+
+                // Fetch Air Quality (to simulate chemical pollution)
                 const airRes = await fetch(`https://air-quality-api.open-meteo.com/v1/air-quality?latitude=${lat}&longitude=${lon}&current=european_aqi,pm10,pm2_5,nitrogen_dioxide,sulphur_dioxide`);
                 const airData = await airRes.json();
 
-                const hw = weatherData.hourly;
-                const ca = airData.current;
+                const curW = weatherData.current;
+                const hourlyW = weatherData.hourly;
+                const curA = airData.current;
 
-                currentData.ph = 7.2 - (ca.sulphur_dioxide * 0.05) - (ca.nitrogen_dioxide * 0.02);
-                if (currentData.ph < 5.5) currentData.ph = 5.5; 
-                currentData.nitrates = (hw.soil_moisture_0_to_1cm[0] * 10) + (hw.precipitation[0] * 2.5) + (ca.pm10 * 0.1);
-                currentData.toxins = (ca.pm2_5 * 0.005) + (ca.nitrogen_dioxide * 0.002);
-                currentData.metals = ca.pm10 * 0.45;
-                currentData.moisture = hw.soil_moisture_0_to_1cm[0] * 100;
-                currentData.soilTemp = hw.soil_temperature_0cm[0];
-                currentData.aqi = ca.european_aqi;
+                // PROFESSIONAL ECO-MAPPING FORMULAS
+                // Note: We use real physical markers to estimate pollution levels dynamically
 
-                if (currentData.nitrates > 15 || currentData.metals > 25 || currentData.ph < 6.0) currentData.risk = "CRITICAL";
-                else if (currentData.nitrates > 8 || currentData.aqi > 60) currentData.risk = "ELEVATED";
-                else currentData.risk = "STABLE";
+                const soilMoist = hourlyW.soil_moisture_0_to_1cm[0] * 100;
+                const precip = hourlyW.precipitation[0];
+                const pm25 = curA.pm2_5;
+                const pm10 = curA.pm10;
+                const no2 = curA.nitrogen_dioxide;
+                const so2 = curA.sulphur_dioxide;
+
+                // pH Balance Estimation: Affected by Acid Rain components (SO2/NO2)
+                // Baselined at 7.2, drops with high SO2/NO2
+                currentData.ph = 7.2 - (so2 * 0.05) - (no2 * 0.02);
+                if (currentData.ph < 5.5) currentData.ph = 5.5;
+
+                // Nitrates Estimation: Runoff from precipitation + soil humidity
+                currentData.nitrates = (soilMoist * 0.1) + (precip * 2.5) + (pm10 * 0.1);
+
+                // Toxins (Pesticides/Chemicals): Correlated with PM2.5 and industrial proxies
+                currentData.toxins = (pm25 * 0.005) + (no2 * 0.002);
+
+                // Heavy Metals: Correlated with PM10 particulate levels
+                currentData.metals = pm10 * 0.45;
+
+                // Phosphates: Simulated as a factor of moisture and nitrogen runoff
+                currentData.phosphates = currentData.nitrates * 0.15;
+
+                currentData.moisture = soilMoist;
+                currentData.soilTemp = hourlyW.soil_temperature_0cm[0];
+                currentData.aqi = curA.european_aqi;
+
+                // Risk Calculation
+                if (currentData.nitrates > 15 || currentData.metals > 25 || currentData.ph < 6.0) {
+                    currentData.risk = "CRITICAL";
+                } else if (currentData.nitrates > 8 || currentData.aqi > 60) {
+                    currentData.risk = "ELEVATED";
+                } else {
+                    currentData.risk = "STABLE";
+                }
 
                 updateUI();
                 log(`DATA_STREAM_SYNCED`);
-            } catch (err) { log(`STREAM_ERROR: ${err.message}`); }
+            } catch (err) {
+                log(`STREAM_ERROR: ${err.message}`);
+                console.error(err);
+            }
         }
 
         function updateUI() {
             document.getElementById('locName').textContent = selectedLoc.name;
             document.getElementById('locBigName').textContent = selectedLoc.name.toUpperCase();
+
             document.getElementById('phVal').textContent = currentData.ph.toFixed(2);
             document.getElementById('toxinLvl').textContent = currentData.toxins.toFixed(3);
             document.getElementById('nitrates').textContent = currentData.nitrates.toFixed(1);
+
             document.getElementById('heavyMetals').innerHTML = `${currentData.metals.toFixed(1)}<span>μg/L</span>`;
-            document.getElementById('phosphates').innerHTML = `${(currentData.nitrates * 0.15).toFixed(2)}<span>мг/л</span>`;
+            document.getElementById('phosphates').innerHTML = `${currentData.phosphates.toFixed(2)}<span>мг/л</span>`;
             document.getElementById('pesticides').innerHTML = `${currentData.toxins.toFixed(2)}<span>ppb</span>`;
+
             const riskEl = document.getElementById('riskLevel');
             riskEl.textContent = currentData.risk;
-            riskEl.style.color = currentData.risk === "CRITICAL" ? "var(--danger)" : currentData.risk === "ELEVATED" ? "var(--warning)" : "var(--accent)";
+            riskEl.style.color = currentData.risk === "CRITICAL" ? "var(--danger)" :
+                currentData.risk === "ELEVATED" ? "var(--warning)" : "var(--accent)";
+
             document.getElementById('soilMoist').textContent = currentData.moisture.toFixed(1);
             document.getElementById('soilTemp').textContent = currentData.soilTemp.toFixed(1);
             document.getElementById('airAqi').textContent = currentData.aqi;
+
             updateAlerts();
             generateReport();
         }
@@ -517,73 +656,138 @@
         function updateAlerts() {
             const zone = document.getElementById('alert-zone');
             zone.innerHTML = '';
+
             const alerts = [];
-            if (currentData.risk === "CRITICAL") alerts.push({ text: "!!! EMERGENCY: TOXIC THRESHOLD !!!", type: "danger" });
-            if (currentData.ph < 6.5) alerts.push({ text: "ACIDIC CORROSION RISK", type: "warning" });
-            if (!alerts.length) {
+            if (currentData.risk === "CRITICAL") alerts.push({ text: "!!! EMERGENCY: TOXIC THRESHOLD EXCEEDED !!!", type: "danger" });
+            if (currentData.ph < 6.5) alerts.push({ text: "ACIDIC CORROSION RISK DETECTED", type: "warning" });
+            if (currentData.nitrates > 12) alerts.push({ text: "EUTROPHICATION ALERT: HIGH NITRATES", type: "danger" });
+            if (currentData.aqi > 80) alerts.push({ text: "ATMOSPHERIC FALLOUT WARNING", type: "warning" });
+
+            if (alerts.length === 0) {
                 const div = document.createElement('div');
                 div.className = "alert-item safe";
-                div.textContent = "> SYSTEM_STATUS: NOMINAL";
+                div.textContent = "> SYSTEM_STATUS: ALL_PARAMETERS_NOMINAL";
                 zone.appendChild(div);
-            } else alerts.forEach(a => {
-                const div = document.createElement('div');
-                div.className = `alert-item ${a.type}`;
-                div.textContent = a.text;
-                zone.appendChild(div);
-            });
+            } else {
+                alerts.forEach(a => {
+                    const div = document.createElement('div');
+                    div.className = `alert-item ${a.type}`;
+                    div.textContent = a.text;
+                    zone.appendChild(div);
+                });
+            }
         }
 
         function generateReport() {
-            let r = `[ МІСЦЕ: ${selectedLoc.name.toUpperCase()} ]\n\nАНАЛІЗ ГРУНТУ:\n- Вологість: ${currentData.moisture.toFixed(1)}%\n- Температура: ${currentData.soilTemp.toFixed(1)}°C\n\nАНАЛІЗ ВОДНОГО СЕРЕДОВИЩА:\n- pH: ${currentData.ph.toFixed(2)}\n- Нітрати: ${currentData.nitrates.toFixed(1)} мг/л\n\nВИСНОВОК: ${currentData.risk}`;
+            let r = `[ МІСЦЕ: ${selectedLoc.name.toUpperCase()} ]\n`;
+            r += `Широта: ${selectedLoc.lat} | Довгота: ${selectedLoc.lon}\n\n`;
+            r += `АНАЛІЗ ГРУНТУ:\n`;
+            r += `- Вологість: ${currentData.moisture.toFixed(1)}% (${currentData.moisture < 20 ? 'ДЕФІЦИТ' : 'НОРМА'})\n`;
+            r += `- Температура: ${currentData.soilTemp.toFixed(1)}°C\n\n`;
+            r += `АНАЛІЗ ВОДНОГО СЕРЕДОВИЩА (ESTIMATED):\n`;
+            r += `- pH: ${currentData.ph.toFixed(2)} [${currentData.ph < 7 ? 'Кисле' : 'Лужне'}]\n`;
+            r += `- Нітрати: ${currentData.nitrates.toFixed(2)} мг/л\n`;
+            r += `- Важкі метали (Pb/Cd index): ${currentData.metals.toFixed(2)} μg/L\n\n`;
+            r += `ВИСНОВОК:\n`;
+            r += currentData.risk === "CRITICAL" ? "!!! НЕБЕЗПЕЧНИЙ РІВЕНЬ ЗАБРУДНЕННЯ. НЕОБХІДНА ДЕКОНТАМІНАЦІЯ !!!" :
+                currentData.risk === "ELEVATED" ? "!! ПІДВИЩЕНА УВАГА. МОЖЛИВІ ЛОКАЛЬНІ ЗАБРУДНЕННЯ !!" :
+                    "> ЕКОСИСТЕМА СТАБІЛЬНА. РИЗИКИ МІНІМАЛЬНІ.";
+
             document.getElementById('detailed-desc').innerText = r;
         }
 
         function log(m) {
             const l = document.getElementById('sys-log');
             const d = document.createElement('div');
-            d.textContent = `> ${m}`;
+            d.textContent = `> [${new Date().toLocaleTimeString()}] ${m}`;
             l.prepend(d);
             if (l.childNodes.length > 5) l.removeChild(l.lastChild);
         }
 
-        async function refreshData() { await fetchEnvironmentalData(selectedLoc.lat, selectedLoc.lon); }
+        async function refreshData() {
+            await fetchEnvironmentalData(selectedLoc.lat, selectedLoc.lon);
+        }
 
+        // CUSTOM SEARCH
         document.getElementById('search-btn').onclick = () => {
             const lat = parseFloat(document.getElementById('c-lat').value);
             const lon = parseFloat(document.getElementById('c-lon').value);
-            if (!isNaN(lat) && !isNaN(lon)) selectLocation({ name: `CUSTOM_SCAN`, lat, lon }, null);
+            if (!isNaN(lat) && !isNaN(lon)) {
+                selectLocation({ name: `SENS_0x${Math.floor(Math.random() * 1000)}`, lat, lon }, null);
+            } else {
+                log("ERROR: INVALID_COORDINATES");
+            }
         };
 
-        const dots = Array.from({length: 50}, () => ({ x: Math.random() * 2000, y: Math.random() * 2000, v: Math.random() * 0.5 + 0.2 }));
+        // BACKGROUND ANIMATION
+        const dots = Array.from({ length: 80 }, () => ({
+            x: Math.random() * 2000,
+            y: Math.random() * 2000,
+            v: Math.random() * 0.5 + 0.2
+        }));
+
         function drawBg() {
-            bgCanvas.width = window.innerWidth; bgCanvas.height = window.innerHeight;
-            bgCtx.fillStyle = '#000'; bgCtx.fillRect(0,0,bgCanvas.width,bgCanvas.height);
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+            bgCtx.fillStyle = '#000';
+            bgCtx.fillRect(0, 0, bgCanvas.width, bgCanvas.height);
+
             dots.forEach(d => {
-                d.y -= d.v; if (d.y < 0) d.y = bgCanvas.height;
-                bgCtx.fillStyle = `rgba(0, 255, 153, ${0.1 + d.v*0.2})`;
+                d.y -= d.v;
+                if (d.y < 0) d.y = bgCanvas.height;
+                bgCtx.fillStyle = `rgba(0, 255, 153, ${0.1 + d.v * 0.2})`;
                 bgCtx.fillRect(d.x % bgCanvas.width, d.y, 2, 2);
             });
             requestAnimationFrame(drawBg);
         }
 
+        // VIZ ANIMATION (CYBER GAUSSIAN)
         function drawViz(t) {
-            vizCanvas.width = vizCanvas.parentElement.clientWidth; vizCanvas.height = vizCanvas.parentElement.clientHeight;
-            vizCtx.clearRect(0,0,vizCanvas.width,vizCanvas.height);
-            const level = currentData.risk === "CRITICAL" ? 0.9 : 0.2;
-            const x = vizCanvas.width/2; const y = vizCanvas.height/2;
-            const r = 60 + level * 40 + Math.sin(t*0.002)*10;
-            const g = vizCtx.createRadialGradient(x,y,0,x,y,r);
-            const color = currentData.risk === "CRITICAL" ? '255,50,100' : '0,255,153';
-            g.addColorStop(0, `rgba(${color}, 0.2)`); g.addColorStop(1, 'transparent');
-            vizCtx.fillStyle = g; vizCtx.beginPath(); vizCtx.arc(x,y,r,0,Math.PI*2); vizCtx.fill();
+            vizCanvas.width = vizCanvas.parentElement.clientWidth;
+            vizCanvas.height = vizCanvas.parentElement.clientHeight;
+            vizCtx.clearRect(0, 0, vizCanvas.width, vizCanvas.height);
+
+            const pulse = (Math.sin(t * 0.002) + 1) / 2;
+            const level = currentData.risk === "CRITICAL" ? 0.9 : currentData.risk === "ELEVATED" ? 0.5 : 0.1;
+
+            for (let i = 0; i < 3; i++) {
+                const x = vizCanvas.width / 2 + Math.cos(t * 0.001 + i * 2) * 50;
+                const y = vizCanvas.height / 2 + Math.sin(t * 0.0012 + i * 2) * 30;
+                const r = 40 + level * 80 + pulse * 20;
+
+                const g = vizCtx.createRadialGradient(x, y, 0, x, y, r);
+                const color = currentData.risk === "CRITICAL" ? '255,50,100' : '0,255,153';
+                g.addColorStop(0, `rgba(${color}, ${0.1 + level * 0.2})`);
+                g.addColorStop(1, 'transparent');
+
+                vizCtx.fillStyle = g;
+                vizCtx.beginPath();
+                vizCtx.arc(x, y, r, 0, Math.PI * 2);
+                vizCtx.fill();
+            }
+
+            // Grid lines overlay
+            vizCtx.strokeStyle = 'rgba(0,255,153,0.05)';
+            for (let i = 0; i < vizCanvas.width; i += 20) {
+                vizCtx.beginPath(); vizCtx.moveTo(i, 0); vizCtx.lineTo(i, vizCanvas.height); vizCtx.stroke();
+            }
             requestAnimationFrame(drawViz);
         }
 
+        // INITIALIZATION
         window.onload = async () => {
-            drawBg(); drawViz(0);
-            await selectLocation(LOCATIONS[0], document.querySelector('.loc-btn'));
+            drawBg();
+            drawViz(0);
+
+            const firstBtn = document.querySelector('.loc-btn');
+            await selectLocation(LOCATIONS[0], firstBtn);
+
+            // Set refresh interval (1 minute)
             setInterval(refreshData, 60000);
+            log("REALTIME_STREAM_ACTIVE_60S_POLLING");
         };
+
     </script>
 </body>
+
 </html>
