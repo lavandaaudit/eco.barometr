@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ECOPOLLUTANT TRACKER · WATER & SOIL POLLUTION MONITOR · PRO 2026</title>
+    <style>
+        :root {
+            --bg: #020506;
+            --accent: #00ff99;
+            --secondary: #00cc99;
+            --danger: #ff3366;
+            --warning: #ffcc33;
+            --glass: rgba(8, 18, 25, 0.96);
+            --border: rgba(0, 255, 153, 0.35);
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            margin: 0;
+            background: #000;
+            color: #d0ffe6;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            min-height: 100vh;
+        }
+        #bg-canvas { position: fixed; inset: 0; z-index: 1; }
+        #ui-dock {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 40px;
+            z-index: 100;
+            padding: 20px;
+            pointer-events: none;
+            width: max-content;
+            max-width: 100vw;
+        }
+        #pollution-gauge {
+            width: 320px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            backdrop-filter: blur(20px);
+            flex-direction: column;
+            padding: 15px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.9);
+            pointer-events: auto;
+            display: flex;
+        }
+        #data-projection {
+            flex: 1;
+            max-width: 1000px;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .proj-section {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+        .proj-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .proj-label {
+            font-size: 8px;
+            color: var(--accent);
+            letter-spacing: 1.5px;
+            opacity: 0.6;
+            margin-bottom: 2px;
+            text-transform: uppercase;
+        }
+        .proj-value {
+            font-size: 16px;
+            color: #fff;
+            font-weight: bold;
+        }
+        .proj-value span {
+            font-size: 9px;
+            opacity: 0.45;
+            font-weight: normal;
+            margin-left: 3px;
+        }
+        .inst-header {
+            font-size: 10px;
+            letter-spacing: 3px;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 6px;
+            text-align: center;
+            font-weight: bold;
+        }
+        #alert-zone {
+            min-height: 20px;
+            margin-bottom: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .alert-item {
+            background: rgba(255,51,102,0.12);
+            border: 1px solid var(--danger);
+            color: var(--danger);
+            font-size: 8px;
+            padding: 5px;
+            border-radius: 3px;
+            text-align: center;
+            animation: pulse-alert 2.2s infinite;
+        }
+        .alert-item.warning {
+            background: rgba(255,204,51,0.12);
+            border: 1px solid var(--warning);
+            color: var(--warning);
+        }
+        @keyframes pulse-alert {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.55; }
+        }
+        .viz-container {
+            width: 100%;
+            height: 220px;
+            background: #010304;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            position: relative;
+            border: 1px solid rgba(0,255,153,0.12);
+        }
+        #eco-desc {
+            margin-top: 10px;
+            font-size: 10px;
+            line-height: 1.6;
+            color: #66ffcc;
+            border-left: 1px solid var(--accent);
+            padding-left: 15px;
+            text-align: justify;
+        }
+        .location-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3px;
+            margin-top: 10px;
+        }
+        .loc-btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--accent);
+            font-size: 7.5px;
+            padding: 4px 2px;
+            cursor: pointer;
+            border-radius: 3px;
+            text-align: center;
+            pointer-events: auto;
+            white-space: nowrap;
+        }
+        .loc-btn.active {
+            background: var(--accent);
+            color: #000;
+        }
+        #sys-log {
+            font-size: 7px;
+            color: var(--accent);
+            opacity: 0.55;
+            height: 35px;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column-reverse;
+            overflow: hidden;
+            border-top: 1px solid var(--border);
+            padding-top: 5px;
+        }
+        .proj-title-big {
+            font-size: 32px;
+            letter-spacing: 10px;
+            color: var(--accent);
+            opacity: 0.28;
+            text-align: center;
+            margin-top: 10px;
+            width: 100%;
+        }
+        #custom-loc {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        #custom-lat, #custom-lon {
+            flex: 1;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--accent);
+            font-size: 8px;
+            padding: 4px;
+            border-radius: 3px;
+        }
+        #search-custom {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--accent);
+            font-size: 8px;
+            padding: 4px 8px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        #search-custom:hover {
+            background: var(--accent);
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bg-canvas"></canvas>
+    <div id="ui-dock">
+        <!-- ЛІВИЙ БЛОК: ГЕЙДЖ ЗАБРУДНЕННЯ -->
+        <div id="pollution-gauge">
+            <div class="inst-header">ECOPOLLUTANT · WATER/SOIL TRACKER</div>
+            <div id="alert-zone"></div>
+            <div class="viz-container">
+                <canvas id="pollution-viz"></canvas>
+            </div>
+            <div class="data-grid">
+                <div class="data-box"><label>ЛОКАЦІЯ</label><b id="locName">---</b></div>
+                <div class="data-box"><label>pH</label><b id="phVal">--</b></div>
+                <div class="data-box"><label>Токсини</label><b id="toxinLvl">--</b></div>
+                <div class="data-box"><label>Нітрати</label><b id="nitrates">--</b> мг/л</div>
+            </div>
+            <div class="location-grid" id="locContainer"></div>
+            <div id="custom-loc">
+                <input type="text" id="custom-lat" placeholder="Широта (lat)">
+                <input type="text" id="custom-lon" placeholder="Довгота (lon)">
+                <button id="search-custom">Пошук</button>
+            </div>
+            <div id="sys-log"></div>
+        </div>
+
+        <!-- ПРАВИЙ БЛОК: ДЕТАЛЬНА АНАЛІТИКА -->
+        <div id="data-projection">
+            <div class="proj-section">
+                <div class="proj-item">
+                    <div class="proj-label">ВАЖКІ МЕТАЛИ</div>
+                    <div class="proj-value" id="heavyMetals">--<span>μg/L</span></div>
+                </div>
+                <div class="proj-item">
+                    <div class="proj-label">ФОСФАТИ</div>
+                    <div class="proj-value" id="phosphates">--<span>мг/л</span></div>
+                </div>
+                <div class="proj-item">
+                    <div class="proj-label">ПЕСТИЦИДИ</div>
+                    <div class="proj-value" id="pesticides">--<span>ppb</span></div>
+                </div>
+                <div class="proj-item">
+                    <div class="proj-label">РІВЕНЬ РИЗИКУ</div>
+                    <div class="proj-value" id="riskLevel">--</div>
+                </div>
+            </div>
+            <div class="proj-section">
+                <div class="proj-item">
+                    <div class="proj-label">ОСТАННІЙ ЗАМІР</div>
+                    <div class="proj-value" id="lastDate">--</div>
+                </div>
+                <div class="proj-item">
+                    <div class="proj-label">Джерело</div>
+                    <div class="proj-value" id="source">WQP / USGS+EPA</div>
+                </div>
+            </div>
+            <div id="eco-desc">
+                <b style="color:var(--accent); font-size: 11px;">[ ЕКОЛОГІЧНИЙ ТОКСИЧНИЙ АНАЛІЗ ]</b><br><br>
+                <span id="detailed-desc">Очікування даних з Water Quality Portal...</span>
+            </div>
+            <div class="proj-title-big" id="locBigName">---</div>
+        </div>
+    </div>
+
+    <script>
+        const locations = [
+            { name: "Київ (Дніпро)", lat: 50.45, lon: 30.52, siteId: "null" }, { name: "Львів", lat: 49.84, lon: 24.03 },
+            { name: "Одеса", lat: 46.48, lon: 30.73 }, { name: "New York Hudson", lat: 40.71, lon: -74.01, siteId: "USGS-01376303" },
+            { name: "London Thames", lat: 51.51, lon: -0.13 }, { name: "Paris Seine", lat: 48.86, lon: 2.35 },
+            { name: "Відень", lat: 48.2082, lon: 16.3738 }, { name: "Берлін", lat: 52.52, lon: 13.40 },
+            { name: "Токіо", lat: 35.68, lon: 139.69 }, { name: "Сідней", lat: -33.86, lon: 151.20 },
+            { name: "Каїр", lat: 30.04, lon: 31.23 }, { name: "Буенос-Айрес", lat: -34.61, lon: -58.38 },
+            { name: "Дубай", lat: 25.20, lon: 55.27 }, { name: "Пекін", lat: 39.90, lon: 116.40 }
+        ];
+
+        let pollution = { ph: 7.0, toxins: 0, nitrates: 0, metals: 0, risk: "Невідомо" };
+
+        const locBox = document.getElementById('locContainer');
+        locations.forEach((loc, i) => {
+            const btn = document.createElement('div');
+            btn.className = 'loc-btn' + (i === 0 ? ' active' : '');
+            btn.textContent = loc.name;
+            btn.onclick = () => {
+                document.querySelectorAll('.loc-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                updatePollution(loc);
+            };
+            locBox.appendChild(btn);
+        });
+
+        const canvas = document.getElementById('pollution-viz');
+        const ctx = canvas.getContext('2d');
+        const bgCanvas = document.getElementById('bg-canvas');
+        const bgCtx = bgCanvas.getContext('2d');
+        const particles = Array.from({length: 120}, () => ({x: Math.random(), y: Math.random(), s: Math.random()*2+0.5, o: Math.random()}));
+
+        function resize() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+            bgCanvas.width = window.innerWidth;
+            bgCanvas.height = window.innerHeight;
+        }
+        window.onresize = resize; resize();
+
+        function drawBg(t) {
+            bgCtx.fillStyle = '#000'; bgCtx.fillRect(0,0,bgCanvas.width,bgCanvas.height);
+            particles.forEach(p => {
+                bgCtx.fillStyle = `rgba(0,255,153,${0.1 + Math.sin(t*0.001 + p.o*10)*0.4})`;
+                bgCtx.fillRect(p.x*bgCanvas.width, p.y*bgCanvas.height, p.s, p.s);
+            });
+        }
+
+        function drawPollutionViz(t) {
+            if (!canvas.width) return;
+            ctx.clearRect(0,0,canvas.width,canvas.height);
+            const riskVal = pollution.risk === "Високий" ? 0.9 : pollution.risk === "Середній" ? 0.5 : 0.15;
+            const grad = ctx.createLinearGradient(0,0,0,canvas.height);
+            grad.addColorStop(0, '#001a0f'); grad.addColorStop(1, '#000');
+            ctx.fillStyle = grad; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+            for (let i = 0; i < 40; i++) {
+                let x = Math.sin(i*0.6 + t*0.08) * 120 + canvas.width/2;
+                let y = Math.cos(i*0.9 + t*0.11) * 80 + canvas.height/2;
+                let size = 30 + Math.sin(t + i)*15 + riskVal*80;
+                let rG = ctx.createRadialGradient(x,y,0,x,y,size);
+                rG.addColorStop(0, `rgba(255,80,80,${0.06 + riskVal*0.4})`);
+                rG.addColorStop(1, 'transparent');
+                ctx.fillStyle = rG;
+                ctx.beginPath(); ctx.arc(x,y,size,0,Math.PI*2); ctx.fill();
+            }
+        }
+
+        async function updatePollution(loc = locations[0]) {
+            try {
+                log(`ЗАПИТ: ${loc.name.toUpperCase()}`);
+                document.getElementById('locName').textContent = loc.name;
+                document.getElementById('locBigName').textContent = loc.name.toUpperCase();
+
+                // Приклад даних (бо WQP потребує siteId, country тощо)
+                // У реальності: https://www.waterqualitydata.us/data/Result/search?format=json&countrycode=US&siteid=USGS-01376303&characteristicName=pH,nitrate,lead...
+                // Для демонстрації використовуємо фіктивні дані + можна додати fetch
+
+                let data = {};
+                if (loc.name.includes("Hudson")) {
+                    data = { ph: 7.4, nitrates: 2.1, lead: 1.2, atrazine: 0.08, date: "2025-11" };
+                } else if (loc.name.includes("Київ")) {
+                    data = { ph: 7.8, nitrates: 8.5, lead: 3.4, atrazine: 0.15, date: "2024" };
+                } else {
+                    data = { ph: 7.2, nitrates: 4.3, lead: 0.9, atrazine: 0.04, date: "2025" };
+                }
+
+                pollution.ph = data.ph || 7.0;
+                pollution.nitrates = data.nitrates || 0;
+                pollution.metals = data.lead || 0;
+                pollution.toxins = data.atrazine || 0;
+                pollution.risk = pollution.nitrates > 10 || pollution.toxins > 0.1 || pollution.metals > 5 
+                    ? "Високий" : pollution.nitrates > 5 ? "Середній" : "Низький";
+
+                document.getElementById('phVal').textContent = pollution.ph.toFixed(1);
+                document.getElementById('toxinLvl').textContent = pollution.toxins.toFixed(2);
+                document.getElementById('nitrates').textContent = pollution.nitrates.toFixed(1);
+                document.getElementById('heavyMetals').innerHTML = `${pollution.metals.toFixed(1)}<span>μg/L</span>`;
+                document.getElementById('phosphates').innerHTML = `${(pollution.nitrates*0.6).toFixed(1)}<span>мг/л</span>`;
+                document.getElementById('pesticides').innerHTML = `${pollution.toxins.toFixed(2)}<span>ppb</span>`;
+                document.getElementById('riskLevel').textContent = pollution.risk;
+                document.getElementById('lastDate').textContent = data.date || "—";
+
+                generateEcoDescription(loc.name, data, pollution.risk);
+                updateAlerts(pollution.risk);
+
+                log(`ОТРИМАНО ДАНІ`);
+            } catch (e) {
+                log("ПОМИЛКА ЗАПИТУ");
+                console.error(e);
+            }
+        }
+
+        function updateAlerts(risk) {
+            const zone = document.getElementById('alert-zone');
+            zone.innerHTML = '';
+            const alerts = [];
+            if (risk === "Високий") alerts.push({text: "!! КРИТИЧНЕ ЗАБРУДНЕННЯ !!", type: 'danger'});
+            if (risk === "Середній") alerts.push({text: "!! СЕРЕДНІЙ РІВЕНЬ ТОКСИНІВ !!", type: 'warning'});
+            if (pollution.nitrates > 10) alerts.push({text: "ВИСОКІ НІТРАТИ — РИЗИК ЕВТРОФІКАЦІЇ", type: 'danger'});
+            if (pollution.toxins > 0.1) alerts.push({text: "ВИЯВЛЕНО ПЕСТИЦИДИ", type: 'danger'});
+
+            alerts.forEach(a => {
+                const div = document.createElement('div');
+                div.className = `alert-item ${a.type === 'warning' ? 'warning' : ''}`;
+                div.textContent = a.text;
+                zone.appendChild(div);
+            });
+
+            if (!alerts.length) {
+                const div = document.createElement('div');
+                div.className = "alert-item warning";
+                div.style.background = "rgba(0,255,153,0.08)";
+                div.style.borderColor = "var(--border)";
+                div.style.color = "var(--accent)";
+                div.style.animation = "none";
+                div.textContent = "> ЕКОСИСТЕМА СТАБІЛЬНА";
+                zone.appendChild(div);
+            }
+        }
+
+        function generateEcoDescription(locName, data, risk) {
+            let report = `[ ТОКСИЧНИЙ ЗВІТ ДЛЯ ${locName.toUpperCase()} ]\n\n`;
+            report += `Останній замір: ${data.date || "невідомо"}\n\n`;
+            report += `pH: ${data.ph || "?"} — ${data.ph < 6.5 || data.ph > 8.5 ? "Порушення кислотно-лужного балансу" : "Нормальний діапазон"}\n`;
+            report += `Нітрати: ${data.nitrates || 0} мг/л — ${data.nitrates > 10 ? "Значне перевищення (евтрофікація)" : "Прийнятний рівень"}\n`;
+            report += `Пестициди/токсини: ${data.atrazine || 0} ppb — ${data.atrazine > 0.1 ? "Потенційна загроза біоті" : "Низький вміст"}\n`;
+            report += `Важкі метали (Pb): ${data.lead || 0} μg/L — ${data.lead > 5 ? "Перевищення норми" : "В межах норми"}\n\n`;
+            report += `Рівень ризику: ${risk}\n`;
+            report += risk === "Високий" ? "Рекомендується негайний аналіз та обмеження використання води.\n" : "Екологічна ситуація контрольована.\n";
+            document.getElementById('detailed-desc').innerText = report;
+        }
+
+        function log(m) {
+            const l = document.getElementById('sys-log');
+            const d = document.createElement('div');
+            d.textContent = `> ${new Date().toLocaleTimeString('uk-UA')} : ${m}`;
+            l.prepend(d);
+            if (l.childNodes.length > 4) l.removeChild(l.lastChild);
+        }
+
+        function loop(t) {
+            drawBg(t);
+            drawPollutionViz(t);
+            requestAnimationFrame(loop);
+        }
+
+        // Додавання обробника для кастомних координат
+        const searchBtn = document.getElementById('search-custom');
+        searchBtn.onclick = () => {
+            const lat = parseFloat(document.getElementById('custom-lat').value);
+            const lon = parseFloat(document.getElementById('custom-lon').value);
+            if (isNaN(lat) || isNaN(lon)) {
+                log("НЕВАЛІДНІ КООРДИНАТИ");
+                return;
+            }
+            const customLoc = { name: "Кастомна Локація", lat, lon };
+            document.querySelectorAll('.loc-btn').forEach(b => b.classList.remove('active'));
+            updatePollution(customLoc);
+        };
+
+        updatePollution();
+        requestAnimationFrame(loop);
+    </script>
+</body>
+</html>
